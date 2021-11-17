@@ -88,23 +88,27 @@ SELECT * FROM producto WHERE precio > ((SELECT AVG(precio) FROM producto WHERE c
 -- BBDD Ejercicios de universidad
 USE universidad;
 -- [...]visualitza el diagrama E-R en un editor i efectua les següents consultes:
+
 -- 1
 SELECT apellido1, apellido2, nombre FROM persona WHERE tipo = 'alumno' ORDER BY apellido1, apellido2, nombre;
 -- 2
-SELECT nombre, apellido1, apellido2 FROM persona WHERE tipo = 'alumno' AND telefono IS NULL ORDER BY apellido1, apellido2, nombre;
+SELECT nombre, apellido1, apellido2 FROM persona WHERE tipo = 'alumno' AND telefono IS NULL;
 -- 3
-SELECT nombre FROM persona WHERE fecha_nacimiento BETWEEN "1999-1-1" AND "1999-12-31";
+SELECT * FROM persona WHERE fecha_nacimiento BETWEEN "1999-1-1" AND "1999-12-31" AND tipo = 'alumno';
 -- 4
+SELECT * FROM persona WHERE tipo = 'profesor' AND  nif REGEXP 'K$';
 -- 5
 SELECT nombre FROM asignatura WHERE curso = 3 AND cuatrimestre = 1 AND id_grado = 7;
 -- 6
-SELECT apellido1, apellido2, persona.nombre, departamento.nombre FROM (persona INNER JOIN profesor ON persona.id = profesor.id_profesor) INNER JOIN departamento ON profesor.id_departamento = departamento.id ORDER BY apellido1, apellido2, persona.nombre;
+SELECT apellido1, apellido2, persona.nombre, departamento.nombre FROM (persona JOIN profesor ON persona.id = profesor.id_profesor) INNER JOIN departamento ON profesor.id_departamento = departamento.id ORDER BY apellido1, apellido2, persona.nombre;
 -- 7
-SELECT persona.nombre, asignatura.nombre, curso_escolar.anyo_inicio, curso_escolar.anyo_fin FROM ((persona INNER JOIN alumno_se_matricula_asignatura ON persona.id = alumno_se_matricula_asignatura.id_alumno) INNER JOIN asignatura ON alumno_se_matricula_asignatura.id_asignatura = asignatura.id) INNER JOIN curso_escolar ON curso_escolar.id = alumno_se_matricula_asignatura.id_curso_escolar WHERE persona.nif = '26902806M';
+SELECT persona.nif, asignatura.nombre, curso_escolar.anyo_inicio, curso_escolar.anyo_fin FROM ((persona INNER JOIN alumno_se_matricula_asignatura ON persona.id = alumno_se_matricula_asignatura.id_alumno) INNER JOIN asignatura ON asignatura.id = alumno_se_matricula_asignatura.id_asignatura) INNER JOIN curso_escolar ON curso_escolar.id = alumno_se_matricula_asignatura.id_curso_escolar WHERE persona.nif = '26902806M';
 -- 8
-SELECT DISTINCT departamento.nombre FROM ((departamento INNER JOIN profesor ON departamento.id = profesor.id_departamento) INNER JOIN asignatura ON profesor.id_profesor = asignatura.id_profesor) INNER JOIN grado ON asignatura.id_grado = grado.id WHERE grado.id = 4; 
+SELECT DISTINCT departamento.nombre FROM ((departamento INNER JOIN profesor ON departamento.id = profesor.id_departamento) INNER JOIN asignatura ON profesor.id_profesor = asignatura.id_profesor) INNER JOIN grado ON asignatura.id_grado = grado.id WHERE grado.id = 4;
 -- 9
-SELECT DISTINCT persona.nombre FROM (persona INNER JOIN alumno_se_matricula_asignatura ama ON persona.id = ama.id_alumno) INNER JOIN curso_escolar ON curso_escolar.id = ama.id_curso_escolar WHERE curso_escolar.anyo_inicio = '2018';
+SELECT DISTINCT persona.nombre, curso_escolar.anyo_inicio FROM (persona INNER JOIN alumno_se_matricula_asignatura ama ON persona.id = ama.id_alumno) INNER JOIN curso_escolar ON curso_escolar.id = ama.id_curso_escolar WHERE curso_escolar.anyo_inicio = '2018';
+
+
 -- Resolgui les 6 següents consultes utilitzant les clàusules LEFT JOIN i RIGHT JOIN.
 -- 1
 SELECT departamento.nombre, persona.apellido1, persona.apellido2, persona.nombre FROM (persona JOIN profesor ON persona.id = profesor.id_profesor) LEFT JOIN departamento ON profesor.id_departamento = departamento.id ORDER BY departamento.nombre, persona.apellido1, persona.apellido2, persona.nombre;
