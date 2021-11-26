@@ -125,8 +125,8 @@ SELECT DISTINCT departamento.nombre FROM departamento LEFT JOIN profesor ON depa
 SELECT DISTINCT persona.nombre FROM (persona JOIN profesor ON persona.id = profesor.id_profesor) LEFT JOIN  asignatura ON  asignatura.id_profesor = profesor.id_profesor WHERE asignatura.id_profesor IS NULL;
 -- 5
 SELECT DISTINCT asignatura.nombre FROM (persona JOIN profesor ON persona.id = profesor.id_profesor) RIGHT JOIN  asignatura ON  asignatura.id_profesor = profesor.id_profesor WHERE asignatura.id_profesor IS NULL;
--- 6 ->REVISA
-SELECT DISTINCT departamento.nombre FROM ((departamento JOIN profesor ON departamento.id = profesor.id_departamento) RIGHT JOIN  asignatura ON profesor.id_profesor = asignatura.id_profesor); 
+-- 6
+SELECT DISTINCT departamento.nombre FROM ((departamento JOIN profesor ON departamento.id = profesor.id_departamento) LEFT JOIN  asignatura ON profesor.id_profesor = asignatura.id_profesor) WHERE asignatura.id_profesor IS NULL;
 
 
 -- Consultes resum:
@@ -141,8 +141,8 @@ SELECT departamento.nombre, COUNT(profesor.id_departamento) FROM profesor JOIN d
 SELECT departamento.nombre, COUNT(profesor.id_departamento) FROM departamento LEFT JOIN profesor ON departamento.id = profesor.id_departamento GROUP BY departamento.nombre;
 -- 5
 SELECT grado.nombre, COUNT(asignatura.nombre) FROM grado LEFT JOIN asignatura ON grado.id = asignatura.id_grado GROUP BY grado.nombre ORDER BY grado.nombre DESC;
--- 6 -> REVISA
-SELECT grado.nombre, COUNT(asignatura.nombre) FROM grado JOIN asignatura ON grado.id = asignatura.id_grado GROUP BY grado.nombre;
+-- 6 ->
+SELECT grado.nombre, COUNT(asignatura.nombre) FROM grado JOIN asignatura ON grado.id = asignatura.id_grado GROUP BY grado.nombre HAVING COUNT(asignatura.nombre) > 40;
 -- 7
 SELECT grado.nombre, asignatura.tipo, SUM(creditos) FROM grado JOIN asignatura ON grado.id = asignatura.id_grado GROUP BY asignatura.tipo, grado.nombre;
 -- 8
@@ -153,6 +153,9 @@ SELECT profesor.id_profesor, persona.nombre, persona.apellido1, persona.apellido
 SELECT * FROM persona WHERE persona.tipo = 'alumno' ORDER BY persona.fecha_nacimiento DESC LIMIT 1;
 -- 11
 SELECT * FROM (profesor JOIN departamento ON profesor.id_departamento = departamento.id) LEFT JOIN asignatura ON asignatura.id_profesor = profesor.id_profesor WHERE asignatura.id_profesor IS NULL;
+
+
+
 
 
 
