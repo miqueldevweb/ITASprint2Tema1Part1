@@ -55,11 +55,11 @@ SELECT producto.nombre, MAX(precio), fabricante.nombre FROM producto, fabricante
 -- 26
 SELECT producto.nombre FROM producto, fabricante WHERE fabricante.nombre = "lenovo";
 -- 27
-SELECT producto.nombre FROM producto, fabricante WHERE fabricante.nombre = "crucial" AND precio > 200;
+SELECT producto.nombre FROM producto WHERE codigo_fabricante = 6 AND precio > 200;
 -- 28
-SELECT producto.nombre FROM producto, fabricante WHERE fabricante.nombre = "asus" OR fabricante.nombre = "hewlett-packard" OR fabricante.nombre = "seagate";
+SELECT producto.nombre, fabricante.nombre FROM producto, fabricante WHERE fabricante.nombre = "asus" OR fabricante.nombre = "hewlett-packard" OR fabricante.nombre = "seagate";
 -- 29
-SELECT producto.nombre FROM producto, fabricante WHERE fabricante.nombre IN ("asus", "hewlett-packard", "seagate");
+SELECT producto.nombre, fabricante.nombre FROM producto, fabricante WHERE fabricante.nombre IN ("asus", "hewlett-packard", "seagate");
 -- 30
 SELECT producto.nombre, producto.precio, fabricante.nombre FROM producto, fabricante WHERE fabricante.nombre REGEXP 'e$';
 -- 31
@@ -67,7 +67,7 @@ SELECT producto.nombre, producto.precio, fabricante.nombre FROM producto, fabric
 -- 32
 SELECT producto.nombre, precio, fabricante.nombre FROM producto, fabricante WHERE PRECIO >= 180 ORDER BY precio DESC, fabricante.nombre;
 -- 33
-SELECT fabricante.codigo, fabricante.nombre FROM fabricante JOIN  producto ON fabricante.codigo = producto.codigo_fabricante;
+SELECT DISTINCT fabricante.codigo, fabricante.nombre FROM fabricante JOIN  producto ON fabricante.codigo = producto.codigo_fabricante;
 -- 34
 SELECT fabricante.nombre, producto.nombre FROM fabricante LEFT JOIN producto ON fabricante.codigo = producto.codigo_fabricante;
 -- 35
@@ -136,11 +136,11 @@ SELECT COUNT(persona.nombre) FROM persona WHERE tipo = 'alumno';
 -- 2
 SELECT COUNT(persona.nombre) FROM persona WHERE fecha_nacimiento BETWEEN '1999-1-1' AND '1999-12-31' AND tipo = 'alumno';
 -- 3
-SELECT departamento.nombre, COUNT(profesor.id_departamento) FROM profesor JOIN departamento ON departamento.id = profesor.id_departamento GROUP BY departamento.nombre;
+SELECT departamento.nombre, COUNT(profesor.id_departamento) FROM profesor JOIN departamento ON departamento.id = profesor.id_departamento GROUP BY departamento.nombre ORDER BY COUNT(profesor.id_departamento) DESC;
 -- 4
 SELECT departamento.nombre, COUNT(profesor.id_departamento) FROM departamento LEFT JOIN profesor ON departamento.id = profesor.id_departamento GROUP BY departamento.nombre;
 -- 5
-SELECT grado.nombre, COUNT(asignatura.nombre) FROM grado LEFT JOIN asignatura ON grado.id = asignatura.id_grado GROUP BY grado.nombre ORDER BY grado.nombre DESC;
+SELECT grado.nombre, COUNT(asignatura.nombre) FROM grado LEFT JOIN asignatura ON grado.id = asignatura.id_grado GROUP BY grado.nombre ORDER BY 	COUNT(asignatura.nombre) DESC;
 -- 6 ->
 SELECT grado.nombre, COUNT(asignatura.nombre) FROM grado JOIN asignatura ON grado.id = asignatura.id_grado GROUP BY grado.nombre HAVING COUNT(asignatura.nombre) > 40;
 -- 7
